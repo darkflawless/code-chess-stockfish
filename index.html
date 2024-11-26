@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Game</title>
+    <link rel="stylesheet" href="chessboard-1.0.0.min.css" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="chessboard-1.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
+    <script src="scripts.js"></script>
+    <style>
+        #board {
+            margin: 10px auto;
+        }
+        #status {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <button id="playAsBlack">Play as Black</button>
+    <button id="playAsWhite">Play as White</button>
+    
+
+    <div id="board" style="width: 600px"></div>
+    <div id="status">Game in Progress</div>
+
+    <script>
+        // Khởi tạo đối tượng Chess từ chess.js
+        const game = new Chess();
+
+        // Hàm xử lý cập nhật trạng thái
+        function updateStatus() {
+            let status = '';
+
+            if (game.in_checkmate()) {
+                status = 'Checkmate! Game over.';
+            } else if (game.in_draw()) {
+                status = 'Draw!';
+            } else if (game.in_check()) {
+                status = 'Check!';
+            } else {
+                status = `${game.turn() === 'w' ? 'White' : 'Black'} to move.`;
+            }
+
+            $('#status').text(status);
+        }
+
+        $('#playAsBlack').on('click', () => {
+        board.orientation('black'); // Đặt bàn cờ hướng cho đen
+        game.reset(); // Khởi động lại game
+        updateStatus(); // Cập nhật trạng thái
+        });
+
+        $('#playAsWhite').on('click', () => {
+        board.orientation('white'); // Đặt bàn cờ hướng cho trắng
+        game.reset(); // Khởi động lại game
+        updateStatus(); // Cập nhật trạng thái
+        });
+        
+
+
+        // Khởi tạo bàn cờ từ chessboard.js
+        const board = Chessboard('board', {
+            pieceTheme: 'wikipedia/{piece}.png',
+            draggable: true,
+            position: 'start',
+            onDragStart: (source, piece) => {
+                // Không cho phép di chuyển khi game kết thúc hoặc di chuyển sai màu
+                if (game.game_over() || 
+                    (game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+                    (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+                    return false;
+                }
+            },
+            onDrop: (source, target) => {
+                // Cố gắng thực hiện nước đi
+                if(game.turn() ==='w'){
+                    const move = game.move({
+                    from: source,
+                    to: target,
+                    promotion: 'q' // Luôn phong hậu khi đi tới cuối bàn
+                });
+
+                // Nếu nước đi không hợp lệ, trả về trạng thái cũ
+                if (move === null) return 'snapback';
+                }
+
+                const result = makeMove(source, target);
+
+                // Cập nhật trạng thái game
+                updateStatus();
+            },
+            onSnapEnd: () => {
+                // Cập nhật giao diện bàn cờ sau khi thực hiện nước đi
+                board.position(game.fen());
+            }
+        });
+
+        // Cập nhật trạng thái lần đầu
+        updateStatus();
+    </script>
+</body>
+</html>
