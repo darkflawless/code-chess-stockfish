@@ -9,7 +9,7 @@
 
     position: relative; /* Needed for vertical centering */
     top: 50%;
-    transform: translatex(75%); /* Centers the board vertically */
+    transform: translatex(0%); /* Centers the board vertically */
 
     width: 600px; /* Specify a width for your board */
     height: 600px; /* Specify a height for your board */

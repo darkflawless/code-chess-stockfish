@@ -41,7 +41,9 @@ async function newgame() {
             },
         });
 
+
     const data = await response.json();
+    console.log("New game response:", data);  // Thêm logging để kiểm tra phản hồi từ server
     board.position(data.fen, true);
     game.load(data.fen);
     updateStatus(); // Cập nhật trạng thái

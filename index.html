@@ -35,11 +35,12 @@
 
         //hàm reset
         $('#reset').on('click', () => {
-            game.reset();
-            board.position(game.fen());
-            updateStatus();
+        game.reset();
+        board.position(game.fen());
+        updateStatus();
+        newgame();  // Gọi hàm newgame để gửi yêu cầu đến server
         });
-
+        
         // Hàm xử lý cập nhật trạng thái
         function updateStatus() {
             let status = '';

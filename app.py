@@ -47,6 +47,7 @@ def get_ai_move():
 def new_game():
     global board
     board.reset()
+    print("Board reset to initial position:", board.fen())  # Thêm logging để kiểm tra trạng thái của board
     return jsonify({"fen": board.fen()})
 
 if __name__ == '__main__':
