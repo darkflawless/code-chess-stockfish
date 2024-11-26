@@ -36,7 +36,6 @@
         //hàm reset
         $('#reset').on('click', () => {
             game.reset();
-            newgame();
             board.position(game.fen());
             updateStatus();
         });
@@ -60,13 +59,13 @@
 
         $('#playAsBlack').on('click', () => {
         board.orientation('black'); // Đặt bàn cờ hướng cho đen
-        game.reset(); // Khởi động lại game
+        // game.reset(); // Khởi động lại game
         updateStatus(); // Cập nhật trạng thái
         });
 
         $('#playAsWhite').on('click', () => {
         board.orientation('white'); // Đặt bàn cờ hướng cho trắng
-        game.reset(); // Khởi động lại game
+        // game.reset(); // Khởi động lại game
         updateStatus(); // Cập nhật trạng thái
         });
         
