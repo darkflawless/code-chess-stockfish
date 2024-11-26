@@ -30,3 +30,25 @@ async function makeMove(source, target) {
         return 'snapback';
     }
 }
+
+async function newgame() {
+    try {
+        // Gửi yêu cầu POST đến server Python
+        const response = await fetch('http://127.0.0.1:5000/newgame',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+    const data = await response.json();
+    board.position(data.fen, true);
+    game.load(data.fen);
+    updateStatus(); // Cập nhật trạng thái
+    
+    } catch (err) {
+        console.error('Lỗi khi giao tiếp với server:', err);
+        alert('Không thể kết nối với server.');
+        return 'snapback';
+    }
+}

@@ -42,5 +42,12 @@ def get_ai_move():
 
     return jsonify({"move": ai_move.uci(), "fen": board.fen()})
 
+
+@app.route('/newgame', methods=['POST'])
+def new_game():
+    global board
+    board.reset()
+    return jsonify({"fen": board.fen()})
+
 if __name__ == '__main__':
     app.run(debug=True)
